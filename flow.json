@@ -1,0 +1,46 @@
+{
+	"emulators": {
+		"default": {
+			"port": 3569,
+			"serviceAccount": "emulator-account"
+		}
+	},
+	"contracts": {
+		"NonFungibleToken": "./cadence/contracts/NonFungibleToken.cdc",
+		"Sentimen": "./cadence/contracts/NFTs/Sentimen.cdc",
+		"SentimenAdmin": "./cadence/contracts/NFTs/SentimenAdmin.cdc",
+		"SentimenCounter": "./cadence/contracts/NFTs/SentimenCounter.cdc",
+		"SentimenMetadata": "./cadence/contracts/NFTs/SentimenMetadata.cdc",
+		"SentimenPack": "./cadence/contracts/NFTs/SentimenPack.cdc",
+		"ContractVersion": "./cadence/contracts/NFTs/ContractVersion.cdc",
+		"NFTStorefront": "./cadence/contracts/NFTStorefront.cdc",
+		"Marketplace": "./cadence/contracts/Marketplace.cdc"
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"admin-account": {
+			"address": "f21fee1faa18dce2",
+			"key": "b14ffe83564b41066f2c4da3baa6791902009b818680b9588d61804668b32863"
+		},
+		"user-account": {
+			"address": "ee3832caa4548467",
+			"key": "77aa480eba52d0f28537dd5466a12cf0e03625e131fee6fca39eca1032d08490"
+		},
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "c62a4d2b09bbaed5f529ceef8901d97b6cdd7127c07a2f8a7390ec19211c506e"
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": ["NonFungibleToken", "Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
+		  },
+		"testnet": {
+			"admin-account": ["Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
+		  }
+	}
+}
