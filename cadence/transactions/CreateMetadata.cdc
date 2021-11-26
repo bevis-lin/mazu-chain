@@ -1,5 +1,5 @@
-import SentimenAdmin from "../cadence/contracts/NFTs/SentimenAdmin.cdc"
-import SentimenMetadata from "../cadence/contracts/NFTs/SentimenMetadata.cdc"
+import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
+import SentimenMetadata from "../contracts/NFTs/SentimenMetadata.cdc"
 
 
 transaction(cardID: UInt64, name: String, description:String, imageUrl:String, data:{String:String}){

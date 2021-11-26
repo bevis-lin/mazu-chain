@@ -1,6 +1,6 @@
-import NonFungibleToken from "../cadence/contracts/NonFungibleToken.cdc"
-import Sentimen from "../cadence/contracts/NFTs/Sentimen.cdc"
-import SentimenPack from "../cadence/contracts/NFTs/SentimenPack.cdc"
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+import Sentimen from "../contracts/NFTs/Sentimen.cdc"
+import SentimenPack from "../contracts/NFTs/SentimenPack.cdc"
 
 transaction {
 

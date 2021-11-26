@@ -1,6 +1,6 @@
-import NonFungibleToken from "../cadence/contracts/NonFungibleToken.cdc"
-import Sentimen from "../cadence/contracts/NFTs/Sentimen.cdc"
-import SentimenMetadata from "../cadence/contracts/NFTs/SentimenMetadata.cdc"
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+import Sentimen from "../contracts/NFTs/Sentimen.cdc"
+import SentimenMetadata from "../contracts/NFTs/SentimenMetadata.cdc"
 
 
 pub fun main(addr: Address, id: UInt64): [UInt64]? {

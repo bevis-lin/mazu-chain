@@ -1,5 +1,5 @@
-import NonFungibleToken from "../cadence/contracts/NonFungibleToken.cdc"
-import Sentimen from "../cadence/contracts/NFTs/Sentimen.cdc"
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+import Sentimen from "../contracts/NFTs/Sentimen.cdc"
 
 // This script uses the NFTMinter resource to mint a new NFT
 // It must be run with the account that has the minter resource
