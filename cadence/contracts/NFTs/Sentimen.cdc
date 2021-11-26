@@ -4,9 +4,11 @@ import SentimenMetadata from "./SentimenMetadata.cdc"
 import SentimenAdmin from "./SentimenAdmin.cdc"
 pub contract Sentimen: NonFungibleToken {
 
-   pub fun getVersion(): String {
+    pub let NFTMinterStoragePath: StoragePath
+  
+    pub fun getVersion(): String {
        return "0.0.1"
-   }
+    }
 
    // The total number of Cards in existence
     pub var totalSupply: UInt64
@@ -240,10 +242,30 @@ pub contract Sentimen: NonFungibleToken {
         return <- create Collection()
     }
 
+    // Resource that an admin or something similar would own to be
+    // able to mint new NFTs
+    //
+    pub resource NFTMinter {
+
+        // mintNFT mints a new NFT with a new ID
+        // and deposit it in the recipients collection using their collection reference
+        pub fun mintNFT(recipient: &{NonFungibleToken.CollectionPublic}) {
+
+            // create a new NFT
+            var newNFT <- create NFT(_cardID:Sentimen.totalSupply, _serial: Sentimen.totalSupply)
+
+            // deposit it in the recipient's account using their reference
+            recipient.deposit(token: <-newNFT)
+
+            Sentimen.totalSupply = Sentimen.totalSupply + UInt64(1)
+        }
+    }
+
     init() {
         self.totalSupply = 0
         self.allCards = []
-
+        self.NFTMinterStoragePath = /storage/NFTMinter
+        self.account.save<@NFTMinter>(<- create NFTMinter(), to: self.NFTMinterStoragePath)
         emit ContractInitialized()
     }
    

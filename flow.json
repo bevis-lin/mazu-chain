@@ -33,6 +33,10 @@
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "c62a4d2b09bbaed5f529ceef8901d97b6cdd7127c07a2f8a7390ec19211c506e"
+		},
+		"emulator-account-user1": {
+			"address": "179b6b1cb6755e31",
+			"key": "ec0e83131c395c494fefd12555e3b5632343840e83dc724e535a67f5d1193963"
 		}
 	},
 	"deployments": {
