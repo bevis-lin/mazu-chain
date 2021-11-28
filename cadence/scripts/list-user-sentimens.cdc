@@ -3,7 +3,7 @@ import Sentimen from "../contracts/NFTs/Sentimen.cdc"
 import SentimenMetadata from "../contracts/NFTs/SentimenMetadata.cdc"
 
 
-pub fun main(addr: Address, id: UInt64): [UInt64]? {
+pub fun main(addr: Address): [UInt64]? {
      let account = getAccount(addr)
      if let ref = account.getCapability<&Sentimen.Collection{Sentimen.ICardCollectionPublic, NonFungibleToken.CollectionPublic}>(/public/sentimenCollection)
                  .borrow() {
