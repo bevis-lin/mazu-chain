@@ -1,5 +1,6 @@
 import NFTStorefront from "../../contracts/NFTStorefront.cdc"
 import Marketplace from "../../contracts/Marketplace.cdc"
+import SentimenMetadata from "../../contracts/NFTs/SentimenMetadata.cdc"
 
 pub fun main(offset: Int, limit: Int): DipslayResult {
     var listingIds: [UInt64] = Marketplace.getListingIDs()
@@ -41,6 +42,8 @@ pub struct ListingDisplayItem {
 
     pub let timestamp: UFix64
 
+    pub let metadata: SentimenMetadata.Metadata
+
     init (
         listingID: UInt64,
         address: Address,
@@ -49,7 +52,8 @@ pub struct ListingDisplayItem {
         salePaymentVaultType: String,
         salePrice: UFix64,
         saleCuts: [NFTStorefront.SaleCut],
-        timestamp: UFix64
+        timestamp: UFix64,
+        metadata: SentimenMetadata.Metadata
     ) {
         self.listingID = listingID
         self.address = address
@@ -59,6 +63,7 @@ pub struct ListingDisplayItem {
         self.salePrice = salePrice
         self.saleCuts = saleCuts
         self.timestamp = timestamp
+        self.metadata = metadata
     }
 }
 
@@ -79,6 +84,9 @@ pub fun getListingDisplayItem(listingID: UInt64): ListingDisplayItem? {
                 let listingDetails = listingPublic.getDetails()
 
                 if listingDetails.purchased == false {
+
+                    let metadata = SentimenMetadata.getMetadataForCardID(cardID: listingDetails.nftID)! as SentimenMetadata.Metadata
+
                     return ListingDisplayItem(
                         listingID: listingID,
                         address: item.storefrontPublicCapability.address,
@@ -87,7 +95,8 @@ pub fun getListingDisplayItem(listingID: UInt64): ListingDisplayItem? {
                         salePaymentVaultType: listingDetails.salePaymentVaultType.identifier,
                         salePrice: listingDetails.salePrice,
                         saleCuts: listingDetails.saleCuts,
-                        timestamp: item.timestamp
+                        timestamp: item.timestamp,
+                        metadata: metadata
                     )
                 }
             }

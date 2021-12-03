@@ -1,0 +1,31 @@
+Result: 
+s.b88d8bc8a5fee2c9ccfc102a8f52b71bcf296716c889c2e5401e869fcf721b1d.DipslayResult(
+  displayItems: 
+    [
+      s.b88d8bc8a5fee2c9ccfc102a8f52b71bcf296716c889c2e5401e869fcf721b1d.ListingDisplayItem(
+        listingID: 32, 
+        address: 0x1cf0e2f2f715450, 
+        nftType: "A.f8d6e0586b0a20c7.Sentimen.NFT", 
+        nftID: 1, 
+        salePaymentVaultType: "A.0ae53cb6e3f42a79.FlowToken.Vault", 
+        salePrice: 2.00000000, 
+        saleCuts: 
+          [ 
+            A.f8d6e0586b0a20c7.NFTStorefront.SaleCut(
+              receiver: Capability<&A.0ae53cb6e3f42a79.FlowToken.Vault{A.ee82856bf20e2aa6.FungibleToken.Receiver}>(address: 0xf8d6e0586b0a20c7, path: /public/flowTokenReceiver), amount: 0.05000000), 
+            A.f8d6e0586b0a20c7.NFTStorefront.SaleCut(
+              receiver: Capability<&A.0ae53cb6e3f42a79.FlowToken.Vault{A.ee82856bf20e2aa6.FungibleToken.Receiver}>(address: 0x1cf0e2f2f715450, path: /public/flowTokenReceiver), amount: 0.15000000), 
+            A.f8d6e0586b0a20c7.NFTStorefront.SaleCut(
+              receiver: Capability<&A.0ae53cb6e3f42a79.FlowToken.Vault{A.ee82856bf20e2aa6.FungibleToken.Receiver}>(address: 0x1cf0e2f2f715450, path: /public/flowTokenReceiver), amount: 1.80000000)
+          ], 
+        timestamp: 1638430766.00000000, 
+        metadata: A.f8d6e0586b0a20c7.SentimenMetadata.Metadata(
+          cardID: 1, 
+          name: "\u{767d}\u{6c99}\u{5c6f}\u{5abd}\u{7956}", 
+          description: "\u{4fe1}\u{5f92}\u{8ddf}\u{96a8}\u{5abd}\u{7956}\u{7684}\u{8f4e}\u{5b50}\u{524d}\u{9032}", 
+          imageUrl: "http://www.digi96.com/mazu-nft/1.jpg", 
+          data: {"activity": "\u{767d}\u{6c99}\u{5c6f}"})
+       )
+    ], 
+    skipCount: 0
+  )
