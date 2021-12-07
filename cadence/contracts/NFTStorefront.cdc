@@ -125,6 +125,8 @@ pub contract NFTStorefront {
         // This specifies the division of payment between recipients.
         pub let saleCuts: [SaleCut]
 
+        pub let activityID: UInt
+
         // setToPurchased
         // Irreversibly set this listing as purchased.
         //
@@ -139,13 +141,15 @@ pub contract NFTStorefront {
             nftID: UInt64,
             salePaymentVaultType: Type,
             saleCuts: [SaleCut],
-            storefrontID: UInt64
+            storefrontID: UInt64,
+            activityID: UInt
         ) {
             self.storefrontID = storefrontID
             self.purchased = false
             self.nftType = nftType
             self.nftID = nftID
             self.salePaymentVaultType = salePaymentVaultType
+            self.activityID = activityID
 
             // Store the cuts
             assert(saleCuts.length > 0, message: "Listing must have at least one payment cut recipient")
@@ -311,7 +315,8 @@ pub contract NFTStorefront {
             nftID: UInt64,
             salePaymentVaultType: Type,
             saleCuts: [SaleCut],
-            storefrontID: UInt64
+            storefrontID: UInt64,
+            activityID: UInt
         ) {
             // Store the sale information
             self.details = ListingDetails(
@@ -319,7 +324,8 @@ pub contract NFTStorefront {
                 nftID: nftID,
                 salePaymentVaultType: salePaymentVaultType,
                 saleCuts: saleCuts,
-                storefrontID: storefrontID
+                storefrontID: storefrontID,
+                activityID: activityID
             )
 
             // Store the NFT provider
@@ -351,7 +357,8 @@ pub contract NFTStorefront {
             nftType: Type,
             nftID: UInt64,
             salePaymentVaultType: Type,
-            saleCuts: [SaleCut]
+            saleCuts: [SaleCut],
+            activityID: UInt
         ): UInt64
         // removeListing
         // Allows the Storefront owner to remove any sale listing, acepted or not.
@@ -385,7 +392,8 @@ pub contract NFTStorefront {
             nftType: Type,
             nftID: UInt64,
             salePaymentVaultType: Type,
-            saleCuts: [SaleCut]
+            saleCuts: [SaleCut],
+            activityID: UInt
          ): UInt64 {
             let listing <- create Listing(
                 nftProviderCapability: nftProviderCapability,
@@ -393,7 +401,8 @@ pub contract NFTStorefront {
                 nftID: nftID,
                 salePaymentVaultType: salePaymentVaultType,
                 saleCuts: saleCuts,
-                storefrontID: self.uuid
+                storefrontID: self.uuid,
+                activityID: activityID
             )
 
             let listingResourceID = listing.uuid

@@ -11,6 +11,7 @@ transaction(recipient: Address) {
     let minter: &Sentimen.NFTMinter
 
     prepare(signer: AuthAccount) {
+        log("mint token for address $recipient")
 
         // borrow a reference to the NFTMinter resource in storage
         self.minter = signer.borrow<&Sentimen.NFTMinter>(from: /storage/NFTMinter)

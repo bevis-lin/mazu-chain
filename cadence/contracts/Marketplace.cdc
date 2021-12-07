@@ -53,6 +53,9 @@ pub contract Marketplace {
     // collection identifier => (NFT id => listingID)
     access(contract) let collectionNFTListingIDs: {String: {UInt64: UInt64}}
 
+    // activity ID => (NFT id => listingID)
+    access(contract) let activityNFTListingIDs: {UInt: {UInt64: UInt64}}
+
     // collection identifier => SaleCutRequirements
     access(contract) let saleCutRequirements: {String: [SaleCutRequirement]}
 
@@ -87,6 +90,10 @@ pub contract Marketplace {
     pub fun getListingID(nftType: Type, nftID: UInt64): UInt64? {
         let nftListingIDs = self.collectionNFTListingIDs[nftType.identifier] ?? {}
         return nftListingIDs[nftID]
+    }
+
+    pub fun getActivityListingIDs(activityID: UInt): {UInt64: UInt64} {
+        return self.activityNFTListingIDs[activityID] ?? {}
     }
 
     pub fun getAllSaleCutRequirements(): {String: [SaleCutRequirement]} {
@@ -192,6 +199,20 @@ pub contract Marketplace {
             }
         }
 
+        // find previous duplicate NFT in activity collection
+        let activityNFTListingIDs = self.activityNFTListingIDs[item.listingDetails.activityID]
+        var previousActivityItem: Item? = nil
+        if let activityNFTListingIDs = activityNFTListingIDs {
+            if let listingID = activityNFTListingIDs[item.listingDetails.nftID] {
+                previousItem = self.listingIDItems[listingID]!
+
+                // panic only if they're same address
+                if previousItem!.storefrontPublicCapability.address == item.storefrontPublicCapability.address {
+                    panic("could not add duplicate NFT in activity collection")
+                }
+            }
+        }
+
         // check sale cut
         let requirements = self.saleCutRequirements[item.listingDetails.nftType.identifier]
             ?? panic("no SaleCutRequirements")
@@ -220,8 +241,10 @@ pub contract Marketplace {
         if let nftListingIDs = nftListingIDs {
             nftListingIDs[item.listingDetails.nftID] = item.listingID
             self.collectionNFTListingIDs[item.listingDetails.nftType.identifier] = nftListingIDs
+            self.activityNFTListingIDs[item.listingDetails.activityID] = nftListingIDs
         } else {
             self.collectionNFTListingIDs[item.listingDetails.nftType.identifier] = {item.listingDetails.nftID: item.listingID}
+            self.activityNFTListingIDs[item.listingDetails.activityID] = {item.listingDetails.nftID: item.listingID}
         }
 
         // remove previous item
@@ -253,6 +276,8 @@ pub contract Marketplace {
         let nftListingIDs = self.collectionNFTListingIDs[item.listingDetails.nftType.identifier] ?? {}
         nftListingIDs.remove(key: item.listingDetails.nftID)
         self.collectionNFTListingIDs[item.listingDetails.nftType.identifier] = nftListingIDs
+        self.activityNFTListingIDs[item.listingDetails.activityID] = nftListingIDs
+
     }
 
     // Run reverse for loop to find out the index to insert
@@ -328,6 +353,7 @@ pub contract Marketplace {
         self.listingIDs = []
         self.listingIDItems = {}
         self.collectionNFTListingIDs = {}
+        self.activityNFTListingIDs = {}
         self.saleCutRequirements = {}
 
         let admin <- create Administrator()

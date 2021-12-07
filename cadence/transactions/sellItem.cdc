@@ -5,7 +5,7 @@ import Marketplace from "../contracts/Marketplace.cdc"
 import FlowToken from 0x0ae53cb6e3f42a79
 import Sentimen from "../contracts/NFTs/Sentimen.cdc"
 
-transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
+transaction(saleItemID: UInt64, saleItemPrice: UFix64, activityID: UInt) {
     let flowTokenReceiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>
     let sentimenProvider: Capability<&Sentimen.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
@@ -73,7 +73,8 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
             nftType: Type<@Sentimen.NFT>(),
             nftID: saleItemID,
             salePaymentVaultType: Type<@FlowToken.Vault>(),
-            saleCuts: saleCuts
+            saleCuts: saleCuts,
+            activityID: activityID
         )
         Marketplace.addListing(id: id, storefrontPublicCapability: self.storefrontPublic)
     }
