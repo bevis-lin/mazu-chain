@@ -3,7 +3,7 @@ import SentimenMetadata from "../contracts/NFTs/SentimenMetadata.cdc"
 
 
 pub fun main(addr: Address): Result {
-    let account = getAccount(0x01cf0e2f2f715450)
+    let account = getAccount(addr)
 
     var nfts: [NFT] = []
     var nftMetadatas: [SentimenMetadata.Metadata?] = []

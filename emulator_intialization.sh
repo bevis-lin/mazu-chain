@@ -5,4 +5,4 @@ flow transactions send ./cadence/transactions/setupAccount.cdc --signer=emulator
 flow transactions send ./cadence/transactions/mintToken.cdc "0x01cf0e2f2f715450"
 flow transactions send ./cadence/transactions/CreateMetadata.cdc 1 "白沙屯媽祖" "信徒跟隨媽祖的轎子前進" "https://mook-aws.hmgcdn.com/images/upload/article/11587/A11587_1432106005_1.jpg" "{\"activity\":\"白沙屯\",\"creator\":\"kunyilin\"}" --signer=emulator-account
 flow transactions send ./cadence/transactions/updateSaleCutSentimen.cdc --signer=emulator-account
-flow transactions send ./cadence/transactions/sellItem.cdc --arg="UInt64:1,UFix64:2.00,UInt:1" --signer=emulator-account-user1
+flow transactions send ./cadence/transactions/sellItem.cdc --arg="UInt64:1,UFix64:0.00001,UInt:1" --signer=emulator-account-user1
