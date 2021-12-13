@@ -48,7 +48,7 @@
 			"emulator-account": ["NonFungibleToken", "Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
 		  },
 		"testnet": {
-			"admin-account": ["Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
+			"admin-account": ["NonFungibleToken", "Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
 		  }
 	}
 }
