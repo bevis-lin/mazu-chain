@@ -14,7 +14,8 @@
 		"SentimenPack": "./cadence/contracts/NFTs/SentimenPack.cdc",
 		"ContractVersion": "./cadence/contracts/NFTs/ContractVersion.cdc",
 		"NFTStorefront": "./cadence/contracts/NFTStorefront.cdc",
-		"Marketplace": "./cadence/contracts/Marketplace.cdc"
+		"Marketplace": "./cadence/contracts/Marketplace.cdc",
+		"SentimenCreator": "./cadence/contracts/NFTs/SentimenCreator.cdc"
 	},
 	"networks": {
 		"emulator": "127.0.0.1:3569",
@@ -49,10 +50,16 @@
 	},
 	"deployments": {
 		"emulator": {
-			"emulator-account": ["NonFungibleToken", "Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
+			"emulator-account": ["NonFungibleToken", 
+				"Sentimen", "SentimenAdmin", "SentimenCounter", 
+				"SentimenMetadata", "SentimenPack", "ContractVersion", 
+				"NFTStorefront", "Marketplace", "SentimenCreator"]
 		  },
 		"testnet": {
-			"admin-account": ["NonFungibleToken", "Sentimen", "SentimenAdmin", "SentimenCounter", "SentimenMetadata", "SentimenPack", "ContractVersion", "NFTStorefront", "Marketplace"]
+			"admin-account": ["NonFungibleToken", 
+				"Sentimen", "SentimenAdmin", "SentimenCounter", 
+				"SentimenMetadata", "SentimenPack", "ContractVersion", 
+				"NFTStorefront", "Marketplace", "SentimenCreator"]
 		  }
 	}
 }
