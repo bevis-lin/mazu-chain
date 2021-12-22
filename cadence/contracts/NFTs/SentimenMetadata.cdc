@@ -1,5 +1,5 @@
-import SentimenAdmin from "./SentimenAdmin.cdc"
 import ContractVersion from "./ContractVersion.cdc"
+import SentimenAdmin from "./SentimenAdmin.cdc"
 
 // Contract to hold Metadata for MotoGPCards. Metadata is accessed using the Card's cardID (not the Card's id)
 //
@@ -51,24 +51,26 @@ pub contract SentimenMetadata: ContractVersion {
        return self.metadatas[cardID]
    }
 
-   //Access to set metadata is controlled using an Admin reference as argument
-   //
+    //Access to set metadata is controlled using an Admin reference as argument
+        //
    pub fun setMetadata(adminRef: &SentimenAdmin.Admin, cardID: UInt64, name:String, description:String, imageUrl:String, data:{String: String}) {
-       pre {
-           adminRef != nil: "adminRef is nil"
-       }
-       let metadata = Metadata(_cardID:cardID, _name:name, _description:description, _imageUrl:imageUrl, _data:data)
-       self.metadatas[cardID] = metadata
-   }
+        pre {
+                adminRef != nil: "adminRef is nil"
+        }
+        
+        let metadata = Metadata(_cardID:cardID, _name:name, _description:description, _imageUrl:imageUrl, _data:data)
+        self.metadatas[cardID] = metadata
+    }
 
-   //Remove metadata by cardID
-   //
-   pub fun removeMetadata(adminRef: &SentimenAdmin.Admin, cardID: UInt64) {
-       pre {
-           adminRef != nil: "adminRef is nil"
-       }
-       self.metadatas.remove(key: cardID)
-   }
+    //Remove metadata by cardID
+    //
+    pub fun removeMetadata(adminRef: &SentimenAdmin.Admin, cardID: UInt64) {
+        pre {
+                adminRef != nil: "adminRef is nil"
+        }
+        self.metadatas.remove(key: cardID)
+    }
+   
    
    init(){
         self.metadatas = {}

@@ -1,4 +1,4 @@
-import SentimenAdmin from "./SentimenAdmin.cdc"
+//import SentimenAdmin from "./SentimenAdmin.cdc"
 import ContractVersion from "./ContractVersion.cdc"
 
 pub contract SentimenCounter: ContractVersion {

@@ -8,6 +8,7 @@
 	"contracts": {
 		"NonFungibleToken": "./cadence/contracts/NonFungibleToken.cdc",
 		"Sentimen": "./cadence/contracts/NFTs/Sentimen.cdc",
+		"SentimenTemplate": "./cadence/contracts/NFTs/SentimenTemplate.cdc",
 		"SentimenAdmin": "./cadence/contracts/NFTs/SentimenAdmin.cdc",
 		"SentimenCounter": "./cadence/contracts/NFTs/SentimenCounter.cdc",
 		"SentimenMetadata": "./cadence/contracts/NFTs/SentimenMetadata.cdc",
@@ -52,13 +53,13 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": ["NonFungibleToken", 
-				"Sentimen", "SentimenAdmin", "SentimenCounter", 
+				"Sentimen", "SentimenTemplate", "SentimenAdmin", "SentimenCounter", 
 				"SentimenMetadata", "SentimenPack", "ContractVersion", 
 				"NFTStorefront", "Marketplace", "SentimenCreator", "SentimenMintRequest"]
 		  },
 		"testnet": {
 			"admin-account": ["NonFungibleToken", 
-				"Sentimen", "SentimenAdmin", "SentimenCounter", 
+				"Sentimen", "SentimenTemplate", "SentimenAdmin", "SentimenCounter", 
 				"SentimenMetadata", "SentimenPack", "ContractVersion", 
 				"NFTStorefront", "Marketplace", "SentimenCreator", "SentimenMintRequest"]
 		  }

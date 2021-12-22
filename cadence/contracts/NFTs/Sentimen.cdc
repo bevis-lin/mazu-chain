@@ -1,7 +1,7 @@
 import NonFungibleToken from "../NonFungibleToken.cdc"
 import SentimenCounter from "./SentimenCounter.cdc"
 import SentimenMetadata from "./SentimenMetadata.cdc"
-import SentimenAdmin from "./SentimenAdmin.cdc"
+//import SentimenAdmin from "./SentimenAdmin.cdc"
 pub contract Sentimen: NonFungibleToken {
 
     pub let NFTMinterStoragePath: StoragePath
