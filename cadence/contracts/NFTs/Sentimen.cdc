@@ -257,7 +257,7 @@ pub contract Sentimen: NonFungibleToken {
             // deposit it in the recipient's account using their reference
             recipient.deposit(token: <-newNFT)
 
-            Sentimen.totalSupply = Sentimen.totalSupply + UInt64(1)
+            //Sentimen.totalSupply = Sentimen.totalSupply + UInt64(1)
         }
     }
 

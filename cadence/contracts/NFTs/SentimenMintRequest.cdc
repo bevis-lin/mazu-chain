@@ -3,7 +3,6 @@ import NonFungibleToken from "../NonFungibleToken.cdc"
 import Sentimen from "./Sentimen.cdc"
 import SentimenTemplate from "./SentimenTemplate.cdc"
 import SentimenPack from "./SentimenPack.cdc"
-//import SentimenMintRequest from "./SentimenMintRequest.cdc"
 import SentimenAdmin from "./SentimenAdmin.cdc"
 import SentimenMetadata from "./SentimenMetadata.cdc"
 
@@ -17,23 +16,29 @@ pub contract SentimenMintRequest: ContractVersion {
     pub let creator: Address
     pub let templateId: UInt64
     pub let price: UFix64
+    pub var completed: Bool
 
     init(_requestId:UInt64, _creator: Address, _templateId: UInt64, _price: UFix64){
       self.requestId = _requestId
       self.creator = _creator
       self.templateId = _templateId
       self.price = _price
+      self.completed = false
     }
+
+    access(contract) fun setToCompleted() {
+            self.completed = true
+        }
   }
 
-  access(self) let creatorMintRequests: {Address: [MintRequest]}
+  access(self) let creatorMintRequests: {Address: [UInt64]}
   access(self) let mintRequests: {UInt64: MintRequest}
 
   pub fun getAllRequests(): {UInt64: MintRequest} {
     return self.mintRequests
   }
 
-  pub fun getRequestsByCreator(address: Address): [MintRequest]? {
+  pub fun getRequestsByCreator(address: Address): [UInt64]? {
     return self.creatorMintRequests[address]
   }
 
@@ -45,19 +50,21 @@ pub contract SentimenMintRequest: ContractVersion {
       panic("Template does not exist")
     }
 
-    let userRequests:[MintRequest]? = self.creatorMintRequests[creator]
+    let userRequests:[UInt64]? = self.creatorMintRequests[creator]
     let addressString:String = creator.toString()
     let newRequestId = self.mintRequests.length+1
+    let requestNew = MintRequest(_requestId: UInt64(newRequestId), _creator: creator, _templateId: templateId, _price: price)
+      
     if(userRequests==nil){
-      let newUserRequests:[MintRequest] = []
-      let requestNew = MintRequest(_requestId: UInt64(newRequestId), _creator: creator, _templateId: templateId, _price: price)
-      newUserRequests.append(requestNew)
+      let newUserRequests:[UInt64] = []
+      newUserRequests.append(UInt64(newRequestId))
       self.creatorMintRequests[creator] = newUserRequests
     }else{
-      let requestNew = MintRequest(_requestId: UInt64(newRequestId), _creator: creator, _templateId: templateId, _price: price)
-      userRequests?.append(requestNew)
+      userRequests?.append(UInt64(newRequestId))
       self.creatorMintRequests[creator] = userRequests
     }
+
+    self.mintRequests[UInt64(newRequestId)] = requestNew
   
   }
 
@@ -67,34 +74,59 @@ pub contract SentimenMintRequest: ContractVersion {
                 minter !=nil: "minter is nil"
             }
 
-            let allMintRequests:{UInt64: SentimenMintRequest.MintRequest} = SentimenMintRequest.getAllRequests()
+            //let allMintRequests:{UInt64: SentimenMintRequest.MintRequest} = SentimenMintRequest.getAllRequests()
                 
-            if(allMintRequests[mintRequestId] !=nil)
+            if(self.mintRequests[mintRequestId] == nil)
             {
                 panic("This mint request id doest not exist!")
             }
             
-            let mintRequest:SentimenMintRequest.MintRequest? = allMintRequests[mintRequestId]
+            let mintRequest:SentimenMintRequest.MintRequest? = self.mintRequests[mintRequestId]
+            if mintRequest!.completed == true {
+              panic("This mint request has been completed")
+            }
+
             let receiver = getAccount(mintRequest!.creator)
             .getCapability(/public/sentimenCollection)
             .borrow<&{NonFungibleToken.CollectionPublic}>()
             ?? panic("Could not get receiver reference to the NFT Collection")
 
-            let newSentimenID = Sentimen.totalSupply
+            var newSentimenCardID:UInt64 = 0
+            
+            
             // Mint the NFT and deposit it to the recipient's collection
             minter.mintNFT(recipient: receiver)
+
+            if(Sentimen.totalSupply == 0)
+            {
+              newSentimenCardID = 1
+            }else{
+              newSentimenCardID = Sentimen.totalSupply
+            }
 
             let template = SentimenTemplate.getTemplateById(templateId:mintRequest!.templateId)
 
             // Create metadata
-            let updatedTotalMintedNumber = SentimenTemplate.getTotalMinted(templateId:template!.templateId)! + UInt64(1)
+            let currentTotalMinted = template!.totalMinted
+            var updatedTotalMintedNumber: UInt64 = 1
+            if(currentTotalMinted != 0){
+              updatedTotalMintedNumber = currentTotalMinted! + UInt64(1)
+            }
+          
+            SentimenTemplate.increaseTemplateTotalMinted(templateId:template!.templateId)
+           
             let newSentimenName = template!.name.concat(" #".concat(updatedTotalMintedNumber.toString()))
             
-
-            SentimenMetadata.setMetadata(adminRef: adminRef,cardID: newSentimenID,
+            SentimenMetadata.setMetadata(adminRef: adminRef,cardID: UInt64(newSentimenCardID),
                 name: newSentimenName, description: template!.description,
                 imageUrl: template!.imageUrl,data: template!.data)
 
+            //close the request
+            mintRequest!.setToCompleted()
+            //self.mintRequests[mintRequestId] = mintRequest
+            self.mintRequests[mintRequestId]!.setToCompleted()
+            
+            
   }
 
   init(){
