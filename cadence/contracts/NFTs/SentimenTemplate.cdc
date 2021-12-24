@@ -8,6 +8,7 @@ pub contract SentimenTemplate: ContractVersion {
 
   pub struct Template {
     pub let templateId: UInt64
+    pub let siteId: String
     pub let creator: Address
     pub let name: String
     pub let description: String
@@ -16,11 +17,12 @@ pub contract SentimenTemplate: ContractVersion {
     pub let totalSupply: UInt64
     pub var totalMinted: UInt64
     
-    init(_templateId:UInt64, _creator: Address, 
+    init(_templateId:UInt64, _siteId:String, _creator: Address, 
     _name:String, _description:String,
     _imageUrl:String,_data:{String:String}, 
     _totalSupply:UInt64) {
       self.templateId = _templateId
+      self.siteId = _siteId
       self.creator = _creator
       self.name = _name
       self.description = _description
@@ -55,7 +57,7 @@ pub contract SentimenTemplate: ContractVersion {
     return self.templates
   }
 
-  pub fun addTemplate(creator:Address, name:String, description:String, imageUrl:String, data:{String:String}, totalSupploy:UInt64) {
+  pub fun addTemplate(siteId: String, creator:Address, name:String, description:String, imageUrl:String, data:{String:String}, totalSupploy:UInt64) {
     
     let sentimenCreator = SentimenCreator.getCreatorProfleByAddress(address: creator)
     if(sentimenCreator == nil){
@@ -64,8 +66,9 @@ pub contract SentimenTemplate: ContractVersion {
 
     let userTemplates:[UInt64]? = self.creatorTemplates[creator]
     var newTemplateId = self.templates.length+1
-    let templateNew = Template(_templateId: UInt64(newTemplateId), _creator: creator, _name: name,
-    _description: description, _imageUrl: imageUrl, _data: data, _totalSupply: totalSupploy)
+    let templateNew = Template(_templateId: UInt64(newTemplateId), _siteId: siteId, 
+    _creator: creator, _name: name, _description: description, _imageUrl: imageUrl, 
+    _data: data, _totalSupply: totalSupploy)
 
     if(userTemplates==nil){
       let newUserTemplates:[UInt64] = []

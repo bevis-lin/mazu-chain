@@ -51,6 +51,10 @@ pub contract Sentimen: NonFungibleToken {
     //
 
     pub resource NFT: NonFungibleToken.INFT {
+
+        // The siteId which distinguish different Sentimen sub branding
+        pub let siteId: String
+
         // The card's Issue ID (completely sequential)
         pub let id: UInt64
 
@@ -64,17 +68,20 @@ pub contract Sentimen: NonFungibleToken {
 
         // initializer
         //
-        init(_cardID: UInt64, _serial: UInt64) {
+        init(_siteId: String, _cardID: UInt64, _serial: UInt64) {
             let keyValue = UInt128(_cardID) + (UInt128(_serial) * (0x4000000000000000 as UInt128))
             if (Sentimen.allCards.contains(keyValue)) {
                 panic("This cardID and serial combination already exists")
             }
             Sentimen.allCards.append(keyValue)
 
+            self.siteId = _siteId
+
             self.cardID = _cardID
+
             self.serial = _serial
 
-            self.id = SentimenCounter.increment("Mazu")
+            self.id = SentimenCounter.increment(_siteId)
 
             Sentimen.totalSupply = Sentimen.totalSupply + (1 as UInt64)
 
@@ -82,7 +89,7 @@ pub contract Sentimen: NonFungibleToken {
         }
 
         pub fun getCardMetadata(): SentimenMetadata.Metadata? {
-            return SentimenMetadata.getMetadataForCardID(cardID: self.cardID)
+            return SentimenMetadata.getMetadataForSentimenNFT(sentimenId: self.id)
         }
 
         destroy(){
@@ -96,8 +103,8 @@ pub contract Sentimen: NonFungibleToken {
     // account because we want to be able to mint NFTs
     // in MotoGPPack
     //
-    access(account) fun createNFT(cardID: UInt64, serial: UInt64): @NFT {
-        return <- create NFT(_cardID: cardID, _serial: serial)
+    access(account) fun createNFT(siteId:String, cardID: UInt64, serial: UInt64): @NFT {
+        return <- create NFT(_siteId: siteId, _cardID: cardID, _serial: serial)
     }
 
     // ICardCollectionPublic
@@ -249,15 +256,24 @@ pub contract Sentimen: NonFungibleToken {
 
         // mintNFT mints a new NFT with a new ID
         // and deposit it in the recipients collection using their collection reference
-        pub fun mintNFT(recipient: &{NonFungibleToken.CollectionPublic}) {
+        pub fun mintNFT(recipient: &{NonFungibleToken.CollectionPublic}, 
+        siteId: String, templateId: UInt64, serialNumber: UInt64): UInt64 {
 
+            log("new mint sentimen before supply count:".concat(Sentimen.totalSupply.toString()))
+            
             // create a new NFT
-            var newNFT <- create NFT(_cardID:Sentimen.totalSupply, _serial: Sentimen.totalSupply)
+            var newNFT <- create NFT(_siteId: siteId, _cardID: templateId, _serial: serialNumber)
+
+            let newNFTId = newNFT.id
 
             // deposit it in the recipient's account using their reference
             recipient.deposit(token: <-newNFT)
 
             //Sentimen.totalSupply = Sentimen.totalSupply + UInt64(1)
+             log("new mint sentimen after supply count:".concat(Sentimen.totalSupply.toString()))
+
+             return newNFTId
+           
         }
     }
 

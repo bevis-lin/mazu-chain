@@ -91,22 +91,7 @@ pub contract SentimenMintRequest: ContractVersion {
             .borrow<&{NonFungibleToken.CollectionPublic}>()
             ?? panic("Could not get receiver reference to the NFT Collection")
 
-            var newSentimenCardID:UInt64 = 0
-            
-            
-            // Mint the NFT and deposit it to the recipient's collection
-            minter.mintNFT(recipient: receiver)
-
-            if(Sentimen.totalSupply == 0)
-            {
-              newSentimenCardID = 1
-            }else{
-              newSentimenCardID = Sentimen.totalSupply
-            }
-
             let template = SentimenTemplate.getTemplateById(templateId:mintRequest!.templateId)
-
-            // Create metadata
             let currentTotalMinted = template!.totalMinted
             var updatedTotalMintedNumber: UInt64 = 1
             if(currentTotalMinted != 0){
@@ -114,10 +99,25 @@ pub contract SentimenMintRequest: ContractVersion {
             }
           
             SentimenTemplate.increaseTemplateTotalMinted(templateId:template!.templateId)
-           
+            
+            // Mint the NFT and deposit it to the recipient's collection
+            let newSentimenId = minter.mintNFT(recipient: receiver, siteId: template!.siteId,
+             templateId: mintRequest!.templateId, serialNumber: updatedTotalMintedNumber)
+            
+            var newSentimenCardID:UInt64 = 0
+            if(Sentimen.totalSupply == 0)
+            {
+              newSentimenCardID = 1
+            }else{
+              newSentimenCardID = Sentimen.totalSupply
+            }
+
+            
+            // Create metadata
             let newSentimenName = template!.name.concat(" #".concat(updatedTotalMintedNumber.toString()))
             
-            SentimenMetadata.setMetadata(adminRef: adminRef,cardID: UInt64(newSentimenCardID),
+            SentimenMetadata.setMetadata(adminRef: adminRef, sentimenId: newSentimenId,
+                cardID: UInt64(newSentimenCardID),
                 name: newSentimenName, description: template!.description,
                 imageUrl: template!.imageUrl,data: template!.data)
 

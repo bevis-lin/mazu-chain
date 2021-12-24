@@ -13,7 +13,7 @@ data: {String:String}, totalSupply: UInt64) {
   }
 
   execute{
-    SentimenTemplate.addTemplate(creator:self.creator, name: name, description: description,
+    SentimenTemplate.addTemplate(siteId: "mazu", creator:self.creator, name: name, description: description,
         imageUrl: imageUrl, data: data, totalSupploy: totalSupply)
   }
 }

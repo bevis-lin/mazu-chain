@@ -13,7 +13,7 @@ pub fun main(addr: Address): Result {
         let ids = collectionRef.getIDs()
         nfts.appendAll(getNFTs(nftType: type, nftIDs: ids))
         for id in ids {
-          let metadata = SentimenMetadata.getMetadataForCardID(cardID: id)
+          let metadata = SentimenMetadata.getMetadataForSentimenNFT(sentimenId: id)
           nftMetadatas.append(metadata)
         }
     }
