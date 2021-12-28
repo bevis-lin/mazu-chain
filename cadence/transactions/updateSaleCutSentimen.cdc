@@ -1,17 +1,18 @@
-import FungibleToken from 0x9a0766d93b6608b7
-import Marketplace from 0xf21fee1faa18dce2
-import FlowToken from 0x7e60df042a9c0868
-import Sentimen from 0xf21fee1faa18dce2
-import SentimenPack from 0xf21fee1faa18dce2
+import FungibleToken from 0x9a0766d93b6608b7 //testnet
+import FlowToken from 0x7e60df042a9c0868 //testnet
+
+import Marketplace from 0x78e84183b7e33d61 //testnet
+import Sentimen from 0x78e84183b7e33d61 //testnet
+import SentimenPack from 0x78e84183b7e33d61 //testnet
 
 // This transaction creates SaleCutRequirements of Marketplace for NFT & Digi96
 
 transaction {
 
     prepare(signer: AuthAccount) {
-        let digi96Recipient: Address = 0xf21fee1faa18dce2
+        let digi96Recipient: Address = 0x3efe3af07c223d62
         let digi96Ratio = 0.025 // 2.5%
-        let nftRecipient: Address = 0xee3832caa4548467
+        let nftRecipient: Address = signer.address //admin account
         let nftRatio = 0.075 // 7.5%
 
         assert(nftRatio + digi96Ratio <= 1.0, message: "total of ratio must be less than or equal to 1.0")

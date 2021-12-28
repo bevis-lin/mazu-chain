@@ -45,8 +45,25 @@ pub contract SentimenTemplate: ContractVersion {
   //   return self.templates[templateId].totalMinted
   // }
 
-  pub fun getTemplatesByCreator(address: Address): [UInt64]? {
-    return self.creatorTemplates[address]
+  pub fun getTemplatesByCreator(address: Address): [SentimenTemplate.Template]? {
+
+    var returnTemplate:[SentimenTemplate.Template] = []
+
+    let ids = self.creatorTemplates[address]
+
+    if(ids==nil) {
+      return returnTemplate
+    }
+    
+    for id in ids! {
+      let template = self.getTemplateById(templateId:id)
+      if(template!=nil)
+      {
+        returnTemplate.append(template!)
+      }
+    }
+
+    return returnTemplate
   }
 
   pub fun getTemplateById(templateId: UInt64): SentimenTemplate.Template? {
@@ -57,7 +74,8 @@ pub contract SentimenTemplate: ContractVersion {
     return self.templates
   }
 
-  pub fun addTemplate(siteId: String, creator:Address, name:String, description:String, imageUrl:String, data:{String:String}, totalSupploy:UInt64) {
+  pub fun addTemplate(siteId: String, creator:Address, name:String, description:String, 
+  imageUrl:String, data:{String:String}, totalSupploy:UInt64):UInt64 {
     
     let sentimenCreator = SentimenCreator.getCreatorProfleByAddress(address: creator)
     if(sentimenCreator == nil){
@@ -80,6 +98,8 @@ pub contract SentimenTemplate: ContractVersion {
     }
 
     self.templates[UInt64(newTemplateId)] = templateNew
+
+    return UInt64(newTemplateId)
     
 
   }

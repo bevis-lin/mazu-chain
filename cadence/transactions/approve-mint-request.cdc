@@ -1,6 +1,10 @@
-import Sentimen from "../contracts/NFTs/Sentimen.cdc"
-import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
-import SentimenMintRequest from "../contracts/NFTs/SentimenMintRequest.cdc"
+//import Sentimen from "../contracts/NFTs/Sentimen.cdc"
+//import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
+//import SentimenMintRequest from "../contracts/NFTs/SentimenMintRequest.cdc"
+import Sentimen from 0x78e84183b7e33d61
+import SentimenAdmin from 0x78e84183b7e33d61
+import SentimenMintRequest from 0x78e84183b7e33d61
+
 
 transaction(requestId: UInt64) {
 

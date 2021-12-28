@@ -26,12 +26,16 @@
 	},
 	"accounts": {
 		"admin-account": {
-			"address": "f21fee1faa18dce2",
-			"key": "b14ffe83564b41066f2c4da3baa6791902009b818680b9588d61804668b32863"
+			"address": "78e84183b7e33d61",
+			"key": "4bb66ef4fb7d91b12ec4fd652e48a00fc7fc3fdebfb7b2543e47db47c492bf05"
 		},
 		"user-account": {
 			"address": "ee3832caa4548467",
 			"key": "77aa480eba52d0f28537dd5466a12cf0e03625e131fee6fca39eca1032d08490"
+		},
+		"user-account-test": {
+			"address": "0xacb1f261685a9a28",
+			"key": "c73d12914928cff0b4d7e49184adfd5582e06924dea676c8985f234de726849b"
 		},
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
