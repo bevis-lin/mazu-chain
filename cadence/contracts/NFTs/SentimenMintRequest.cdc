@@ -38,9 +38,25 @@ pub contract SentimenMintRequest: ContractVersion {
     return self.mintRequests
   }
 
-  pub fun getRequestsByCreator(address: Address): [UInt64]? {
-    return self.creatorMintRequests[address]
+  // pub fun getRequestsByCreator(address: Address): [UInt64]? {
+  //   return self.creatorMintRequests[address]
+  // }
+
+  pub fun getRequestsByCreator(address: Address): [MintRequest] {
+    let testMintRequests: [MintRequest] = []
+
+    if let requestIds = self.creatorMintRequests[address]
+    {
+      for id in requestIds {
+        if let request = self.mintRequests[UInt64(id)] {
+          testMintRequests.append(request)
+        }
+      }
+    }
+    
+    return testMintRequests
   }
+
 
   pub fun addRequest(creator: Address, templateId: UInt64, price: UFix64 ) {
 
