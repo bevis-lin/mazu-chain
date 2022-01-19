@@ -15,14 +15,12 @@ pub contract SentimenMintRequest: ContractVersion {
     pub let requestId: UInt64
     pub let creator: Address
     pub let templateId: UInt64
-    pub let price: UFix64
     pub var completed: Bool
 
-    init(_requestId:UInt64, _creator: Address, _templateId: UInt64, _price: UFix64){
+    init(_requestId:UInt64, _creator: Address, _templateId: UInt64){
       self.requestId = _requestId
       self.creator = _creator
       self.templateId = _templateId
-      self.price = _price
       self.completed = false
     }
 
@@ -58,7 +56,7 @@ pub contract SentimenMintRequest: ContractVersion {
   }
 
 
-  pub fun addRequest(creator: Address, templateId: UInt64, price: UFix64 ) {
+  pub fun addRequest(creator: Address, templateId: UInt64) {
 
     //check if template exists or not
     let template = SentimenTemplate.getTemplateById(templateId: templateId)
@@ -69,7 +67,7 @@ pub contract SentimenMintRequest: ContractVersion {
     let userRequests:[UInt64]? = self.creatorMintRequests[creator]
     let addressString:String = creator.toString()
     let newRequestId = self.mintRequests.length+1
-    let requestNew = MintRequest(_requestId: UInt64(newRequestId), _creator: creator, _templateId: templateId, _price: price)
+    let requestNew = MintRequest(_requestId: UInt64(newRequestId), _creator: creator, _templateId: templateId)
       
     if(userRequests==nil){
       let newUserRequests:[UInt64] = []
@@ -120,20 +118,11 @@ pub contract SentimenMintRequest: ContractVersion {
             let newSentimenId = minter.mintNFT(recipient: receiver, siteId: template!.siteId,
              templateId: mintRequest!.templateId, serialNumber: updatedTotalMintedNumber)
             
-            var newSentimenCardID:UInt64 = 0
-            if(Sentimen.totalSupply == 0)
-            {
-              newSentimenCardID = 1
-            }else{
-              newSentimenCardID = Sentimen.totalSupply
-            }
-
-            
             // Create metadata
             let newSentimenName = template!.name.concat(" #".concat(updatedTotalMintedNumber.toString()))
             
             SentimenMetadata.setMetadata(adminRef: adminRef, sentimenId: newSentimenId,
-                cardID: UInt64(newSentimenCardID),
+                templateId: mintRequest!.templateId,
                 name: newSentimenName, description: template!.description,
                 imageUrl: template!.imageUrl,data: template!.data)
 

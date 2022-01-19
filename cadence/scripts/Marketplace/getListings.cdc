@@ -1,27 +1,11 @@
-import NFTStorefront from "../../contracts/NFTStorefront.cdc"
-import Marketplace from "../../contracts/Marketplace.cdc"
-import SentimenMetadata from "../../contracts/NFTs/SentimenMetadata.cdc"
+//import NFTStorefront from "../../contracts/NFTStorefront.cdc"
+//import Marketplace from "../../contracts/Marketplace.cdc"
+//import SentimenMetadata from "../../contracts/NFTs/SentimenMetadata.cdc"
+import NFTStorefront from 0x4cb6bfd7b94aea71
+import Marketplace from 0x4cb6bfd7b94aea71
+import SentimenMetadata from 0x4cb6bfd7b94aea71
 
-pub fun main(offset: Int, limit: Int): DipslayResult {
-    var listingIds: [UInt64] = Marketplace.getListingIDs()
 
-    var displayItems: [ListingDisplayItem] = []
-    var limit = limit
-    var skipCount = 0
-    var index = offset
-    while index < listingIds.length && limit >= 0 {
-        let listingID = listingIds[index]
-        if let item = getListingDisplayItem(listingID: listingID) {
-            displayItems.append(item)
-            limit = limit - 1
-        } else {
-            skipCount = skipCount + 1
-        }
-        index = index + 1
-    }
-
-    return DipslayResult(displayItems: displayItems, skipCount: skipCount)
-}
 
 pub struct ListingDisplayItem {
 
@@ -85,7 +69,7 @@ pub fun getListingDisplayItem(listingID: UInt64): ListingDisplayItem? {
 
                 if listingDetails.purchased == false {
 
-                    let metadata = SentimenMetadata.getMetadataForCardID(cardID: listingDetails.nftID)! as SentimenMetadata.Metadata
+                    let metadata = SentimenMetadata.getMetadataForSentimenNFT(sentimenId: listingDetails.nftID)! as SentimenMetadata.Metadata
 
                     return ListingDisplayItem(
                         listingID: listingID,
@@ -104,4 +88,25 @@ pub fun getListingDisplayItem(listingID: UInt64): ListingDisplayItem? {
     }
 
     return nil
+}
+
+pub fun main(offset: Int, limit: Int): DipslayResult {
+    var listingIds: [UInt64] = Marketplace.getListingIDs()
+
+    var displayItems: [ListingDisplayItem] = []
+    var limit = limit
+    var skipCount = 0
+    var index = offset
+    while index < listingIds.length && limit >= 0 {
+        let listingID = listingIds[index]
+        if let item = getListingDisplayItem(listingID: listingID) {
+            displayItems.append(item)
+            limit = limit - 1
+        } else {
+            skipCount = skipCount + 1
+        }
+        index = index + 1
+    }
+
+    return DipslayResult(displayItems: displayItems, skipCount: skipCount)
 }

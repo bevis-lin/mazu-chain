@@ -2,7 +2,7 @@ import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
 import SentimenMetadata from 0xf21fee1faa18dce2
 
 
-transaction(cardID: UInt64, name: String, description:String, imageUrl:String, data:{String:String}){
+transaction(templateId: UInt64, name: String, description:String, imageUrl:String, data:{String:String}){
 
     let adminRef: &SentimenAdmin.Admin
 
@@ -11,7 +11,7 @@ transaction(cardID: UInt64, name: String, description:String, imageUrl:String, d
     }
 
     execute {
-        SentimenMetadata.setMetadata(adminRef: self.adminRef,cardID: cardID,name: name,description: description,imageUrl: imageUrl,data: data)
+        SentimenMetadata.setMetadata(adminRef: self.adminRef,templateId: templateId,name: name,description: description,imageUrl: imageUrl,data: data)
     }
 
 }

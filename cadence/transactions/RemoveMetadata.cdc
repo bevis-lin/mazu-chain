@@ -1,7 +1,7 @@
 import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
 import SentimenMetadata from "../contracts/NFTs/SentimenMetadata.cdc"
 
-transaction(cardID: UInt64) {
+transaction(templateId: UInt64) {
 
   let adminRef: &SentimenAdmin.Admin
 
@@ -10,7 +10,7 @@ transaction(cardID: UInt64) {
     }
 
     execute {
-      SentimenMetadata.removeMetadata(adminRef: self.adminRef, cardID: cardID)
+      SentimenMetadata.removeMetadata(adminRef: self.adminRef, templateId: templateId)
     }
 
 }

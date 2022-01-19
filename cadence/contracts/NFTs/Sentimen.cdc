@@ -35,32 +35,23 @@ pub contract Sentimen: NonFungibleToken {
 
     pub event Burn(id: UInt64)
 
-    // An array UInt128s that represents cardID + serial keys
+    // An array UInt128s that represents templateId + serial keys
     // This is primarily used to ensure there
-    // are no duplicates when we mint a new Card (NFT)
+    // are no duplicates when we mint a new Sentimen (NFT)
    access(account) var allCards: [UInt128]
 
-    // NFT
-    // The NFT resource defines a specific Card
-    // that has an id, cardID, and serial.
-    // This resource will be created every time
-    // a pack opens and when we need to mint Cards.
-    //
-    // This NFT represents a Card. These names
-    // will be used interchangeably.
-    //
-
+  
     pub resource NFT: NonFungibleToken.INFT {
 
         // The siteId which distinguish different Sentimen sub branding
         pub let siteId: String
 
-        // The card's Issue ID (completely sequential)
+        // The Sentimen's Issue ID (completely sequential)
         pub let id: UInt64
 
-        // The card's cardID, which will be determined
+        // The Sentimen's templated, which will be determined
         // once the pack is opened
-        pub let cardID: UInt64
+        pub let templateId: UInt64
 
         // The card's Serial, which will also be determined
         // once the pack is opened
@@ -68,16 +59,16 @@ pub contract Sentimen: NonFungibleToken {
 
         // initializer
         //
-        init(_siteId: String, _cardID: UInt64, _serial: UInt64) {
-            let keyValue = UInt128(_cardID) + (UInt128(_serial) * (0x4000000000000000 as UInt128))
+        init(_siteId: String, _templateId: UInt64, _serial: UInt64) {
+            let keyValue = UInt128(_templateId) + (UInt128(_serial) * (0x4000000000000000 as UInt128))
             if (Sentimen.allCards.contains(keyValue)) {
-                panic("This cardID and serial combination already exists")
+                panic("This templateId and serial combination already exists")
             }
             Sentimen.allCards.append(keyValue)
 
             self.siteId = _siteId
 
-            self.cardID = _cardID
+            self.templateId = _templateId
 
             self.serial = _serial
 
@@ -103,8 +94,8 @@ pub contract Sentimen: NonFungibleToken {
     // account because we want to be able to mint NFTs
     // in MotoGPPack
     //
-    access(account) fun createNFT(siteId:String, cardID: UInt64, serial: UInt64): @NFT {
-        return <- create NFT(_siteId: siteId, _cardID: cardID, _serial: serial)
+    access(account) fun createNFT(siteId:String, templateId: UInt64, serial: UInt64): @NFT {
+        return <- create NFT(_siteId: siteId, _templateId: templateId, _serial: serial)
     }
 
     // ICardCollectionPublic
@@ -220,7 +211,7 @@ pub contract Sentimen: NonFungibleToken {
         // borrowCard
         // borrowCard returns a borrowed reference to a Card
         // so that the caller can read data from it.
-        // They can use this to read its id, cardID, and serial
+        // They can use this to read its id, sentimenId, and serial
         //
         pub fun borrowCard(id: UInt64): &Sentimen.NFT? {
             if self.ownedNFTs[id] != nil {
@@ -262,7 +253,7 @@ pub contract Sentimen: NonFungibleToken {
             log("new mint sentimen before supply count:".concat(Sentimen.totalSupply.toString()))
             
             // create a new NFT
-            var newNFT <- create NFT(_siteId: siteId, _cardID: templateId, _serial: serialNumber)
+            var newNFT <- create NFT(_siteId: siteId, _templateId: templateId, _serial: serialNumber)
 
             let newNFTId = newNFT.id
 

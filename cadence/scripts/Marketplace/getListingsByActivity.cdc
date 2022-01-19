@@ -86,7 +86,7 @@ pub fun getListingDisplayItem(listingID: UInt64): ListingDisplayItem? {
 
                 if listingDetails.purchased == false {
 
-                    let metadata = SentimenMetadata.getMetadataForCardID(cardID: listingDetails.nftID)! as SentimenMetadata.Metadata
+                    let metadata = SentimenMetadata.getMetadataForSentimenNFT(sentimenId: listingDetails.nftID)! as SentimenMetadata.Metadata
 
                     return ListingDisplayItem(
                         listingID: listingID,

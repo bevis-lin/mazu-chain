@@ -1,6 +1,7 @@
-import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
-import SentimenCreator from "../contracts/NFTs/SentimenCreator.cdc"
-//import SentimenMetadata from 0xf21fee1faa18dce2
+//import SentimenAdmin from "../contracts/NFTs/SentimenAdmin.cdc"
+//import SentimenCreator from "../contracts/NFTs/SentimenCreator.cdc"
+import SentimenAdmin from 0x2ebc7543c6a3f855
+import SentimenCreator from 0x2ebc7543c6a3f855
 
 
 transaction(address: Address, name: String, email:String, profileUrl:String, data:{String:String}){
@@ -12,7 +13,6 @@ transaction(address: Address, name: String, email:String, profileUrl:String, dat
     }
 
     execute {
-        //SentimenMetadata.setMetadata(adminRef: self.adminRef,cardID: cardID,name: name,description: description,imageUrl: imageUrl,data: data)
         SentimenCreator.setCreator(adminRef: self.adminRef, address:address, name:name, email:email, profileUrl:profileUrl, data:data)
     }
 
