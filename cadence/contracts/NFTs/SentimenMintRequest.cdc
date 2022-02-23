@@ -55,6 +55,10 @@ pub contract SentimenMintRequest: ContractVersion {
     return testMintRequests
   }
 
+  pub fun getRequestById(reqId: UInt64): MintRequest {
+    return self.mintRequests[reqId]!
+  }
+
 
   pub fun addRequest(creator: Address, templateId: UInt64) {
 
